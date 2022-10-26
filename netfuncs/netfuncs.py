@@ -16,7 +16,21 @@ def ipv4_to_value(ipv4_addr):
     return:    0x01020304 0b00000001000000100000001100000100 16909060
     """
 
-    # TODO -- write me!
+    # First use split to get individual nums
+    ip_bytes = ipv4_addr.split('.')
+
+    # Need to loop through nums to make ints
+    for b in ip_bytes:
+        ints = int(b)
+
+    # Convert ints to hex
+    hexes = hex(ints)
+
+    # Build nums by shifting hex nums ex: (0xc6 << 24) | ....
+
+    # This ^ will get us built decimal and hex nums, now convert one to binary as well
+
+    return ip_bytes
     pass
 
 def value_to_ipv4(addr):
@@ -144,17 +158,17 @@ def find_router_for_ip(routers, ip):
 
 # Uncomment this code to have it run instead of the real main.
 # Be sure to comment it back out before you submit!
-"""
+
 def my_tests():
     print("-------------------------------------")
     print("This is the result of my custom tests")
     print("-------------------------------------")
 
-    print(x)
+    # print(x)
 
-    # Add custom test code here
-"""
-
+    # ipv4 to value testing
+    assert(ipv4_to_value('192.51.100.10') == ['192', '51', '100', '10'])
+    print("ipv4_to_value({})  ".format('192.51.100.10'), "PASSED")
 ## -------------------------------------------
 ## Do not modify below this line
 ##

@@ -18,19 +18,24 @@ def ipv4_to_value(ipv4_addr):
 
     # First use split to get individual nums
     ip_bytes = ipv4_addr.split('.')
+    print(ip_bytes)
 
     # Need to loop through nums to make ints
+    hexes= []
     for b in ip_bytes:
         ints = int(b)
+        print(ints)
+        hexes += hex(ints)
+        print(hexes)
+
 
     # Convert ints to hex
-    hexes = hex(ints)
 
     # Build nums by shifting hex nums ex: (0xc6 << 24) | ....
 
     # This ^ will get us built decimal and hex nums, now convert one to binary as well
 
-    return ip_bytes
+    # return ip_bytes
     pass
 
 def value_to_ipv4(addr):
@@ -167,8 +172,9 @@ def my_tests():
     # print(x)
 
     # ipv4 to value testing
-    assert(ipv4_to_value('192.51.100.10') == ['192', '51', '100', '10'])
-    print("ipv4_to_value({})  ".format('192.51.100.10'), "PASSED")
+    ipv4_to_value('192.51.100.10')
+    # assert(ipv4_to_value('192.51.100.10') == ['192', '51', '100', '10'])
+    # print("ipv4_to_value({})  ".format('192.51.100.10'), "PASSED")
 ## -------------------------------------------
 ## Do not modify below this line
 ##

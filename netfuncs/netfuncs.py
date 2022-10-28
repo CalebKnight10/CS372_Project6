@@ -63,7 +63,22 @@ def value_to_ipv4(addr):
     return: "1.2.3.4"
     """
 
-    # TODO -- write me!
+    # if we receive a hex, shift right and use AND/OR, use f string or join
+    if '0x' in addr:
+        addr = addr.replace('0x', '')
+        hex_bytes = [''.join(x) for x in zip(*[iter(addr)]*2)]
+        print(hex_bytes)
+        ints = [int(x, 16) for x in hex_bytes]
+        print(ints)
+        ip_from_hex = ".".join(str(x) for x in ints)
+        print(ip_from_hex)
+    # if we receive a int, go to hex, shift right and use AND/OR, then use f string or join
+
+    # if we receive a bin, go to hex, shift righ and use AND/OR, then use f string or join
+
+
+
+
     pass
 
 def get_subnet_mask_value(slash):
@@ -180,8 +195,11 @@ def my_tests():
 
     # print(x)
 
-    # ipv4 to value testing
-    
+    # ipv4 to value tests
+
+
+    # value to ipv4 tests
+    value_to_ipv4('0xc633640a')
 
 
 ## -------------------------------------------

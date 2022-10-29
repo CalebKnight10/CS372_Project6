@@ -64,35 +64,33 @@ def value_to_ipv4(addr):
     """
 
     # if we receive a hex, replace leading 0x, get bytes, get ints, join
-    # if '0x' in addr:
-    #     addr = addr.replace('0x', '')
-    #     hex_bytes = [''.join(x) for x in zip(*[iter(addr)]*2)]
-    #     print(hex_bytes)
-    #     hex_ints = [int(x, 16) for x in hex_bytes]
-    #     print(hex_ints)
-    #     ip_from_hex = ".".join(str(x) for x in hex_ints)
-    #     print(ip_from_hex)
-    #     return ip_from_hex
+    if '0x' in addr:
+        addr = addr.replace('0x', '')
+        hex_bytes = [''.join(x) for x in zip(*[iter(addr)]*2)]
+        print(hex_bytes)
+        hex_ints = [int(x, 16) for x in hex_bytes]
+        print(hex_ints)
+        ip_from_hex = ".".join(str(x) for x in hex_ints)
+        print(ip_from_hex)
+        return ip_from_hex
 
-    #    # if we receive a bin, replace leading 0b, get bytes, get ints, join ints
-    # if '0b' in addr:
-    #     addr = addr.replace('0b', '')
-    #     bin_bytes = [''.join(x) for x in zip(*[iter(addr)]*8)]
-    #     print(bin_bytes)
-    #     bin_ints = [int(x, 2) for x in bin_bytes]
-    #     print(bin_ints)
-    #     ip_from_bin = ".".join(str(x) for x in bin_ints)
-    #     print(ip_from_bin)
-    #     return ip_from_bin
+       # if we receive a bin, replace leading 0b, get bytes, get ints, join ints
+    if '0b' in addr:
+        addr = addr.replace('0b', '')
+        bin_bytes = [''.join(x) for x in zip(*[iter(addr)]*8)]
+        print(bin_bytes)
+        bin_ints = [int(x, 2) for x in bin_bytes]
+        print(bin_ints)
+        ip_from_bin = ".".join(str(x) for x in bin_ints)
+        print(ip_from_bin)
+        return ip_from_bin
     
     # if we receive a int, 
-    if '2'|'3'|'4'|'5'|'6'|'7'|'8'|'9' in addr:
-        print(addr)
-        # int_bytes = '.'.join([str(addr >> (i << 3) & 0xFF) for i in range(4)[::-1]])
-        # print(int_bytes)
-
-
-
+    else:
+        addr = int(addr)
+        ip_from_dec = ".".join(map(lambda x: str(addr >> x & 0xFF), [24,16,8,0]))
+        print(ip_from_dec)
+        return ip_from_dec
     pass
 
 def get_subnet_mask_value(slash):

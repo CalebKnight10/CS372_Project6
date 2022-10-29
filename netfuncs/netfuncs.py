@@ -110,7 +110,36 @@ def get_subnet_mask_value(slash):
     return: 0xfffffe00 0b11111111111111111111111000000000 4294966784
     """
 
-    # TODO -- write me!
+
+    # Check if it is in ipv4 format, if so get just the subnet
+    if '.' in slash:
+        subnet_mask = slash.split('/')
+        print(subnet_mask)
+        subnet_mask = subnet_mask[1]
+        print(subnet_mask)
+        # return subnet_mask
+
+    # If not, just get the subnet number
+    else:
+        subnet_mask = slash.split('/')
+        subnet_mask = subnet_mask[1]
+        print(subnet_mask)
+        # return subnet_mask
+
+    subnet_mask = int(subnet_mask)
+    # With subnet number, get binary output
+    bin_num = 1
+    for x in range(subnet_mask):
+        bin_num = bin((bin_num << 1))
+        print(bin_num)
+    remainder = 32 - subnet_mask
+    print(remainder)
+    remain_num = 0
+    for x in range(remainder):
+        (remain_num << 0)
+        print(remain_num)
+    bin_sub = bin_num + remain_num
+    print(bin_sub)
     pass
 
 def ips_same_subnet(ip1, ip2, slash):
@@ -213,7 +242,10 @@ def my_tests():
     # value to ipv4 tests
     # value_to_ipv4('0xc633640a')
     # value_to_ipv4('00b0001111101010100011010110000101')
-    value_to_ipv4('3325256714')
+    # value_to_ipv4('3325256714')
+    # get_subnet_mask_value("10.20.30.40/23")
+    get_subnet_mask_value("/23")
+
 
 ## -------------------------------------------
 ## Do not modify below this line

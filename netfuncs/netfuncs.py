@@ -18,23 +18,22 @@ def ipv4_to_value(ipv4_addr):
 
     # First use split to get individual nums
     ip_bytes = ipv4_addr.split('.')
-    print(ip_bytes)
+    # print(ip_bytes)
 
     # Need to loop through nums to make ints
+    decimal = 0 
+    for b in range(len(ip_bytes)):
+        ints = int(b)
+        # Build nums by shifting hex nums ex: (0xc6 << 24) | ....
+        ip_bytes[b] = int(ip_bytes[b]) << (24-(b*8))
+        decimal += ip_bytes[b]
+        # print(decimal)
+
     hexes = ''
     hex_s = ''
-    for b in ip_bytes:
-        ints = int(b)
-        # Convert ints to hex
-        hexes = (hex(ints))
-        hex_s += hexes.replace('0x', '')
-
+    
     hex_string = "0x" + hex_s
     # print(hex_string)
-
-    # Build nums by shifting hex nums ex: (0xc6 << 24) | ....
-    decimal = (0xc0 << 24) | (0x33 << 16) | (0x64 << 8) | 0x0a
-    # print(decimal)
 
     # This ^ will get us built decimal and hex nums, now convert one to binary as well
     binary = bin(decimal)
@@ -43,7 +42,7 @@ def ipv4_to_value(ipv4_addr):
     final_output = hex_string + "   " + binary + "   " + str(decimal)
     # print(final_output)
 
-    return final_output
+    return decimal
 
     pass
 
@@ -67,29 +66,29 @@ def value_to_ipv4(addr):
     if '0x' in addr:
         addr = addr.replace('0x', '')
         hex_bytes = [''.join(x) for x in zip(*[iter(addr)]*2)]
-        print(hex_bytes)
+        # print(hex_bytes)
         hex_ints = [int(x, 16) for x in hex_bytes]
-        print(hex_ints)
+        # print(hex_ints)
         ip_from_hex = ".".join(str(x) for x in hex_ints)
-        print(ip_from_hex)
+        # print(ip_from_hex)
         return ip_from_hex
 
        # if we receive a bin, replace leading 0b, get bytes, get ints, join ints
     if '0b' in addr:
         addr = addr.replace('0b', '')
         bin_bytes = [''.join(x) for x in zip(*[iter(addr)]*8)]
-        print(bin_bytes)
+        # print(bin_bytes)
         bin_ints = [int(x, 2) for x in bin_bytes]
-        print(bin_ints)
+        # print(bin_ints)
         ip_from_bin = ".".join(str(x) for x in bin_ints)
-        print(ip_from_bin)
+        # print(ip_from_bin)
         return ip_from_bin
     
     # if we receive a int, 
     else:
         addr = int(addr)
         ip_from_dec = ".".join(map(lambda x: str(addr >> x & 0xFF), [24,16,8,0]))
-        print(ip_from_dec)
+        # print(ip_from_dec)
         return ip_from_dec
     pass
 
@@ -109,8 +108,6 @@ def get_subnet_mask_value(slash):
     slash:  "10.20.30.40/23"
     return: 0xfffffe00 0b11111111111111111111111000000000 4294966784
     """
-
-
 
     # Check if it is in ipv4 format, if so get just the subnet
     if '.' in slash:
@@ -138,15 +135,18 @@ def get_subnet_mask_value(slash):
             subnet_val = (subnet_val << 1)
             # print(subnet_val)
 
-    print(subnet_val)
+    # print(subnet_val)
 
     # Get Binary value from decimal version of subnet
     bin_val = bin(subnet_val)
-    print(bin_val)
+    # print(bin_val)
 
     # Get Hex value from decimal version of subnet
     hex_val = hex(subnet_val)
-    print(hex_val)
+    # print(hex_val)
+
+    final_val = hex_val + '     ' + bin_val + '     ' + str(subnet_val)
+    # print(final_val)
     return subnet_val
 
     pass
@@ -176,7 +176,31 @@ def ips_same_subnet(ip1, ip2, slash):
     return: False
     """
 
-    # TODO -- write me!
+    # Get the address from ipv4
+    ip1_addr = ipv4_to_value(ip1)
+    ip2_addr = ipv4_to_value(ip2)
+    # print(ip1_addr)
+    # print(ip2_addr)
+
+    # Get subnet too
+    subnet_mask = get_subnet_mask_value(slash)
+    # print(subnet_mask)
+
+    # Make networks ints and use bitwise addr & subnet
+    ip1_network = (ip1_addr & subnet_mask)
+    ip2_network = (ip2_addr & subnet_mask)
+    # print(ip1_network)
+    # print(ip2_network)
+
+    # Compare
+    if ip1_network == ip2_network:
+        print('True')
+        return True
+
+    else: 
+        print('False')
+        return False
+
     pass
 
 def get_network(ip_value, netmask):
@@ -190,7 +214,7 @@ def get_network(ip_value, netmask):
     return:   0x01020300
     """
 
-    # TODO -- write me!
+    return ip_value
     pass
 
 def find_router_for_ip(routers, ip):
@@ -252,8 +276,10 @@ def my_tests():
     # value_to_ipv4('0xc633640a')
     # value_to_ipv4('00b0001111101010100011010110000101')
     # value_to_ipv4('3325256714')
-    get_subnet_mask_value("10.20.30.40/23")
-    get_subnet_mask_value("/23")
+    # get_subnet_mask_value("10.20.30.40/23")
+    # get_subnet_mask_value("/23")
+    ips_same_subnet("10.23.121.17", "10.23.121.225", "/23")
+    ips_same_subnet("10.23.230.22", "10.24.121.225", "/16")
 
 
 ## -------------------------------------------

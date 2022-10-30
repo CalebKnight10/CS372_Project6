@@ -111,35 +111,44 @@ def get_subnet_mask_value(slash):
     """
 
 
+
     # Check if it is in ipv4 format, if so get just the subnet
     if '.' in slash:
         subnet_mask = slash.split('/')
-        print(subnet_mask)
+        # print(subnet_mask)
         subnet_mask = subnet_mask[1]
-        print(subnet_mask)
+        # print(subnet_mask)
         # return subnet_mask
 
     # If not, just get the subnet number
     else:
         subnet_mask = slash.split('/')
         subnet_mask = subnet_mask[1]
-        print(subnet_mask)
+        # print(subnet_mask)
         # return subnet_mask
-
+    
     subnet_mask = int(subnet_mask)
-    # With subnet number, get binary output
-    bin_num = 1
-    for x in range(subnet_mask):
-        bin_num = bin((bin_num << 1))
-        print(bin_num)
-    remainder = 32 - subnet_mask
-    print(remainder)
-    remain_num = 0
-    for x in range(remainder):
-        (remain_num << 0)
-        print(remain_num)
-    bin_sub = bin_num + remain_num
-    print(bin_sub)
+    subnet_val = 0
+
+    for x in range(32):
+        if x < int(slash.split('/')[1]): 
+            subnet_val = (subnet_val << 1) + 1
+            # print(subnet_val)
+        else:
+            subnet_val = (subnet_val << 1)
+            # print(subnet_val)
+
+    print(subnet_val)
+
+    # Get Binary value from decimal version of subnet
+    bin_val = bin(subnet_val)
+    print(bin_val)
+
+    # Get Hex value from decimal version of subnet
+    hex_val = hex(subnet_val)
+    print(hex_val)
+    return subnet_val
+
     pass
 
 def ips_same_subnet(ip1, ip2, slash):
@@ -243,7 +252,7 @@ def my_tests():
     # value_to_ipv4('0xc633640a')
     # value_to_ipv4('00b0001111101010100011010110000101')
     # value_to_ipv4('3325256714')
-    # get_subnet_mask_value("10.20.30.40/23")
+    get_subnet_mask_value("10.20.30.40/23")
     get_subnet_mask_value("/23")
 
 

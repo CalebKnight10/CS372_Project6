@@ -214,7 +214,7 @@ def get_network(ip_value, netmask):
     return:   0x01020300
     """
 
-    return ip_value
+    return ip_value & netmask
     pass
 
 def find_router_for_ip(routers, ip):
@@ -256,13 +256,13 @@ def find_router_for_ip(routers, ip):
     return: None
     """
 
-    # Go through the routers and get the netmask
+    # Go through the routers and get the netmask num
     for addr in routers:
-        slash = routers[addr]["netmask"]
+        netmask = routers[addr]["netmask"]
 
-        # Check if the ips are on the same subnet based off of the slash
+        # Check if the ips are on the same subnet based off of the netmask
         # that we got previously
-        if ips_same_subnet(addr, ip, slash):
+        if ips_same_subnet(addr, ip, netmask):
             return addr
     return None    
 

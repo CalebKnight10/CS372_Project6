@@ -63,7 +63,7 @@ def value_to_ipv4(addr):
     """
 
     # if we receive a hex, replace leading 0x, get bytes, get ints, join
-    if '0x' in addr:
+    if '0x' in str(addr):
         addr = addr.replace('0x', '')
         hex_bytes = [''.join(x) for x in zip(*[iter(addr)]*2)]
         # print(hex_bytes)
@@ -74,7 +74,7 @@ def value_to_ipv4(addr):
         return ip_from_hex
 
        # if we receive a bin, replace leading 0b, get bytes, get ints, join ints
-    if '0b' in addr:
+    if '0b' in str(addr):
         addr = addr.replace('0b', '')
         bin_bytes = [''.join(x) for x in zip(*[iter(addr)]*8)]
         # print(bin_bytes)
@@ -194,11 +194,11 @@ def ips_same_subnet(ip1, ip2, slash):
 
     # Compare
     if ip1_network == ip2_network:
-        print('True')
+        # print('True')
         return True
 
     else: 
-        print('False')
+        # print('False')
         return False
 
     pass
@@ -256,16 +256,25 @@ def find_router_for_ip(routers, ip):
     return: None
     """
 
-    # TODO -- write me!
+    # Go through the routers and get the netmask
+    for addr in routers:
+        slash = routers[addr]["netmask"]
+
+        # Check if the ips are on the same subnet based off of the slash
+        # that we got previously
+        if ips_same_subnet(addr, ip, slash):
+            return addr
+    return None    
+
     pass
 
 # Uncomment this code to have it run instead of the real main.
 # Be sure to comment it back out before you submit!
 
-def my_tests():
-    print("-------------------------------------")
-    print("This is the result of my custom tests")
-    print("-------------------------------------")
+# def my_tests():
+#     print("-------------------------------------")
+#     print("This is the result of my custom tests")
+#     print("-------------------------------------")
 
     # print(x)
 
@@ -278,8 +287,8 @@ def my_tests():
     # value_to_ipv4('3325256714')
     # get_subnet_mask_value("10.20.30.40/23")
     # get_subnet_mask_value("/23")
-    ips_same_subnet("10.23.121.17", "10.23.121.225", "/23")
-    ips_same_subnet("10.23.230.22", "10.24.121.225", "/16")
+    # ips_same_subnet("10.23.121.17", "10.23.121.225", "/23")
+    # ips_same_subnet("10.23.230.22", "10.24.121.225", "/16")
 
 
 ## -------------------------------------------
@@ -338,7 +347,7 @@ def print_ip_routers(routers, src_dest_pairs):
     router_host_map = {}
 
     for ip in all_ips:
-        router = find_router_for_ip(routers, ip)
+        router = str(find_router_for_ip(routers, ip))
         
         if router not in router_host_map:
             router_host_map[router] = []

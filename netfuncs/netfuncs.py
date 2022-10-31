@@ -18,7 +18,6 @@ def ipv4_to_value(ipv4_addr):
 
     # First use split to get individual nums
     ip_bytes = ipv4_addr.split('.')
-    # print(ip_bytes)
 
     # Need to loop through nums to make ints
     decimal = 0 
@@ -27,21 +26,6 @@ def ipv4_to_value(ipv4_addr):
         # Build nums by shifting hex nums ex: (0xc6 << 24) | ....
         ip_bytes[b] = int(ip_bytes[b]) << (24-(b*8))
         decimal += ip_bytes[b]
-        # print(decimal)
-
-    hexes = ''
-    hex_s = ''
-    
-    hex_string = "0x" + hex_s
-    # print(hex_string)
-
-    # This ^ will get us built decimal and hex nums, now convert one to binary as well
-    binary = bin(decimal)
-    # print(binary)
-
-    final_output = hex_string + "   " + binary + "   " + str(decimal)
-    # print(final_output)
-
     return decimal
 
     pass
@@ -112,17 +96,12 @@ def get_subnet_mask_value(slash):
     # Check if it is in ipv4 format, if so get just the subnet
     if '.' in slash:
         subnet_mask = slash.split('/')
-        # print(subnet_mask)
         subnet_mask = subnet_mask[1]
-        # print(subnet_mask)
-        # return subnet_mask
 
     # If not, just get the subnet number
     else:
         subnet_mask = slash.split('/')
         subnet_mask = subnet_mask[1]
-        # print(subnet_mask)
-        # return subnet_mask
     
     subnet_mask = int(subnet_mask)
     subnet_val = 0
@@ -130,23 +109,9 @@ def get_subnet_mask_value(slash):
     for x in range(32):
         if x < int(slash.split('/')[1]): 
             subnet_val = (subnet_val << 1) + 1
-            # print(subnet_val)
         else:
             subnet_val = (subnet_val << 1)
-            # print(subnet_val)
 
-    # print(subnet_val)
-
-    # Get Binary value from decimal version of subnet
-    bin_val = bin(subnet_val)
-    # print(bin_val)
-
-    # Get Hex value from decimal version of subnet
-    hex_val = hex(subnet_val)
-    # print(hex_val)
-
-    final_val = hex_val + '     ' + bin_val + '     ' + str(subnet_val)
-    # print(final_val)
     return subnet_val
 
     pass
@@ -179,26 +144,19 @@ def ips_same_subnet(ip1, ip2, slash):
     # Get the address from ipv4
     ip1_addr = ipv4_to_value(ip1)
     ip2_addr = ipv4_to_value(ip2)
-    # print(ip1_addr)
-    # print(ip2_addr)
 
     # Get subnet too
     subnet_mask = get_subnet_mask_value(slash)
-    # print(subnet_mask)
 
     # Make networks ints and use bitwise addr & subnet
     ip1_network = (ip1_addr & subnet_mask)
     ip2_network = (ip2_addr & subnet_mask)
-    # print(ip1_network)
-    # print(ip2_network)
 
     # Compare
     if ip1_network == ip2_network:
-        # print('True')
         return True
 
     else: 
-        # print('False')
         return False
 
     pass
